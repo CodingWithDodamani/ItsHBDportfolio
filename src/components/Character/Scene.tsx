@@ -106,8 +106,23 @@ const Scene = () => {
         landingDiv.addEventListener("touchstart", onTouchStart);
         landingDiv.addEventListener("touchend", onTouchEnd);
       }
+      
+      // Frame counter for throttling during tour
+      let frameCount = 0;
+      const TOUR_THROTTLE = 4; // Only render every 4th frame during tour
+      
       const animate = () => {
         requestAnimationFrame(animate);
+        
+        // Throttle rendering when tour is active to improve scroll performance
+        const isTourActive = document.body.classList.contains('tour-active');
+        if (isTourActive) {
+          frameCount++;
+          if (frameCount % TOUR_THROTTLE !== 0) {
+            return; // Skip this frame during tour
+          }
+        }
+        
         if (headBone) {
           handleHeadRotation(
             headBone,

@@ -1,50 +1,140 @@
 .about-section {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
   place-items: center;
   position: relative;
   opacity: 1;
   height: auto;
   width: var(--cWidth);
   margin: auto;
+  padding: 40px 15px;
 }
+
 .about-me {
-  padding: 50px 0px;
+  padding: 30px 0px;
   padding-bottom: 0;
-  width: 500px;
-  max-width: calc(100% - 15px);
+  width: 100%;
+  max-width: calc(100% - 20px);
 }
+
+/* Mobile title styling */
 .about-me h3 {
-  font-size: 25px;
+  font-size: 18px;
   text-transform: uppercase;
-  letter-spacing: 7px;
+  letter-spacing: 4px;
   font-weight: 400;
   color: var(--accentColor);
+  margin-bottom: 20px;
 }
 
-.about-me p {
-  font-size: 33px;
-  font-weight: 600;
-  line-height: 36px;
-  letter-spacing: 1px;
+.about-content {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* Mobile paragraph styling */
+.about-paragraph {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.3px;
+  text-align: left;
+  margin-bottom: 16px;
+  /* Gradient text effect */
+  background: linear-gradient(135deg, #dbd56e, #ff6b6b, #48dbfb, #ff9ff3, #54a0ff);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 8s ease infinite;
+}
+
+.about-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* Gradient flow animation */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Pause heavy animations during tour for smooth scrolling */
+body.tour-active .about-paragraph {
+  animation-play-state: paused;
+}
+
+body.tour-active .anim-char {
+  animation-play-state: paused;
+}
+
+/* Small mobile (320px - 480px) */
+@media only screen and (min-width: 480px) {
+  .about-paragraph {
+    font-size: 17px;
+    line-height: 30px;
+  }
+
+  .about-me h3 {
+    font-size: 20px;
+    letter-spacing: 5px;
+  }
+}
+
+/* Tablet breakpoint (600px+) */
 @media only screen and (min-width: 600px) {
   .about-section {
     justify-content: center;
+    padding: 50px 20px;
+  }
+
+  .about-paragraph {
+    font-size: 18px;
+    line-height: 32px;
+    text-align: justify;
+  }
+
+  .about-me h3 {
+    font-size: 22px;
+    letter-spacing: 6px;
   }
 }
+
+/* Tablet landscape (768px+) */
 @media only screen and (min-width: 768px) {
   .about-me {
-    width: 500px;
+    width: 600px;
     max-width: calc(100% - 70px);
     transform: translateY(0%);
   }
+
   .about-section {
     opacity: 1;
   }
+
+  .about-paragraph {
+    font-size: 20px;
+    line-height: 34px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .about-me h3 {
+    font-size: 24px;
+    letter-spacing: 7px;
+  }
 }
+
+/* Desktop (1025px+) */
 @media only screen and (min-width: 1025px) {
   .about-section {
     width: var(--cWidth);
@@ -54,18 +144,84 @@
     padding: 0px;
     opacity: 1;
   }
+
   .about-me {
     padding: 0px;
     width: 50%;
   }
-  .about-me p {
-    font-size: 1.9vw;
-    line-height: 2.3vw;
+
+  .about-paragraph {
+    font-size: 1.3vw;
+    line-height: 2vw;
   }
 }
+
+/* Large desktop (1950px+) */
 @media only screen and (min-width: 1950px) {
-  .about-me p {
-    font-size: 2.5rem;
-    line-height: 2.7rem;
+  .about-paragraph {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
+}
+
+/* Animated flowing color text effect */
+.anim-text-flow {
+  display: inline;
+}
+
+.anim-char {
+  display: inline-block;
+  animation: colorFlow 8s ease-in-out infinite alternate;
+  color: #e0e0e0;
+}
+
+/* Preserve spaces */
+.anim-char:empty::before {
+  content: '\00a0';
+}
+
+@keyframes colorFlow {
+  0% {
+    color: #e0e0e0;
+  }
+
+  10% {
+    color: #ff6b6b;
+  }
+
+  20% {
+    color: #feca57;
+  }
+
+  30% {
+    color: #48dbfb;
+  }
+
+  40% {
+    color: #ff9ff3;
+  }
+
+  50% {
+    color: #54a0ff;
+  }
+
+  60% {
+    color: #5f27cd;
+  }
+
+  70% {
+    color: #00d2d3;
+  }
+
+  80% {
+    color: #ff6b6b;
+  }
+
+  90% {
+    color: #1dd1a1;
+  }
+
+  100% {
+    color: #e0e0e0;
   }
 }

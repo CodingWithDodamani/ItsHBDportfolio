@@ -1,78 +1,78 @@
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { config } from "../config";
-
-gsap.registerPlugin(ScrollTrigger);
+import Marquee from "react-fast-marquee";
 
 const Work = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
   useEffect(() => {
-    let translateX: number = 0;
-
-    function setTranslateX() {
-      const box = document.getElementsByClassName("work-box");
-      if (box.length === 0) return;
-      const rectLeft = document
-        .querySelector(".work-container")!
-        .getBoundingClientRect().left;
-      const rect = box[0].getBoundingClientRect();
-      const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-      let padding: number =
-        parseInt(window.getComputedStyle(box[0]).padding) / 2;
-      translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-    }
-
-    setTranslateX();
-
-    let timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".work-section",
-        start: "top top",
-        end: `+=${translateX}`, // Use actual scroll width
-        scrub: true,
-        pin: true,
-        id: "work",
-      },
-    });
-
-    timeline.to(".work-flex", {
-      x: -translateX,
-      ease: "none",
-    });
-
-    // Clean up
-    return () => {
-      timeline.kill();
-      ScrollTrigger.getById("work")?.kill();
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const ProjectCard = ({ project, index }: { project: typeof config.projects[0]; index: number }) => (
+    <div className="work-box">
+      <div className="work-info">
+        <div className="work-title">
+          <h3>0{index + 1}</h3>
+          <div>
+            <h4>{project.title}</h4>
+            <p>{project.category}</p>
+          </div>
+        </div>
+        <h4>Tools and features</h4>
+        <p>{project.technologies}</p>
+        {project.liveUrl && (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="work-live-link"
+            data-cursor="disable"
+          >
+            View Live →
+          </a>
+        )}
+      </div>
+      <WorkImage image={project.image} alt={project.title} />
+    </div>
+  );
+
   return (
-    <div className="work-section" id="work">
+    <div className={`work-section ${isMobile ? 'mobile' : ''}`} id="work">
       <div className="work-container section-container">
         <h2>
           My <span>Work</span>
         </h2>
-        <div className="work-flex">
-          {config.projects.map((project, index) => (
-            <div className="work-box" key={project.id}>
-              <div className="work-info">
-                <div className="work-title">
-                  <h3>0{index + 1}</h3>
-
-                  <div>
-                    <h4>{project.title}</h4>
-                    <p>{project.category}</p>
-                  </div>
-                </div>
-                <h4>Tools and features</h4>
-                <p>{project.technologies}</p>
-              </div>
-              <WorkImage image={project.image} alt={project.title} />
-            </div>
-          ))}
-        </div>
+        {isMobile ? (
+          // Mobile: Stacked vertical layout
+          <div className="work-flex mobile-flex">
+            {config.projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </div>
+        ) : (
+          // Desktop: Infinite auto-scroll marquee
+          <Marquee
+            speed={40}
+            pauseOnHover={true}
+            gradient={false}
+            className="work-marquee"
+          >
+            {config.projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+            {/* Duplicate for seamless loop */}
+            {config.projects.map((project, index) => (
+              <ProjectCard key={`dup-${project.id}`} project={project} index={index} />
+            ))}
+          </Marquee>
+        )}
       </div>
     </div>
   );

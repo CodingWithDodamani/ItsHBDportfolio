@@ -12,6 +12,12 @@ export function initialFX() {
     backgroundColor: "#0b080c",
     duration: 0.5,
     delay: 1,
+    onComplete: () => {
+      // Dispatch event to start portfolio tour after animations settle
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("startPortfolioTour"));
+      }, 500);
+    }
   });
 
   const selectors = [".landing-info h3", ".landing-intro h2", ".landing-intro h1"];
